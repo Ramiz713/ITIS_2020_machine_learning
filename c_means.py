@@ -1,5 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+
+
+def visualize_cluster(k, x, y, x_c, y_c, matrix):
+    color = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+             for i in range(k)]
+    x_points = []
+    y_points = []
+    for i in range(k):
+        x_points.append(list())
+        y_points.append(list())
+    for i in range(len(x)):
+        row_index = np.argmax(matrix[i], axis=0)
+        x_points[row_index].append(x[i])
+        y_points[row_index].append(y[i])
+    for i in range(k):
+        plt.scatter(x_points[i], y_points[i], color=color[i])
+    plt.scatter(x_c, y_c, color='black')
+    plt.show()
 
 
 def dist(x1, y1, x2, y2):
@@ -12,8 +31,8 @@ def recalc_c(x, y, x_c, y_c, matrix, k, m):
         numerator_y = 0
         denominator = 0
         for i in range(len(x)):
-            numerator_x += x[i] * matrix[i][j] ** m
-            numerator_y += y[i] * matrix[i][j] ** m
+            numerator_x += x[i] * (matrix[i][j] ** m)
+            numerator_y += y[i] * (matrix[i][j] ** m)
             denominator += matrix[i][j] ** m
         x_c[j] = numerator_x / denominator
         y_c[j] = numerator_y / denominator
@@ -34,12 +53,12 @@ def find_max_element(matrix, new_matrix, n, k):
     for i in range(0, n):
         for j in range(0, k):
             temp = abs(matrix[i][j] - new_matrix[i][j])
-            if (temp > max_element):
+            if temp > max_element:
                 max_element = temp
     return max_element
 
 
-def с_means(x, y, n, k, m, epsilon):
+def c_means(x, y, n, k, m, epsilon):
     x_cc = np.mean(x)
     y_cc = np.mean(y)
     r = []
@@ -57,7 +76,8 @@ def с_means(x, y, n, k, m, epsilon):
     while (True):
         recalc_c(x, y, x_c, y_c, matrix, k, m)
         new_matrix = calculate_matrix(x, y, x_c, y_c, k, m)
-        if (find_max_element(matrix, new_matrix, n, k) < epsilon):
+        if find_max_element(matrix, new_matrix, n, k) < epsilon:
+            visualize_cluster(k, x, y, x_c, y_c, new_matrix)
             break
         else:
             matrix = new_matrix
@@ -67,8 +87,8 @@ def с_means(x, y, n, k, m, epsilon):
 
 n = 100
 k = 4
-m = 2
-epsilon = 0.01
+m = 1
+epsilon = 0.001
 x = np.random.randint(1, n, n)
 y = np.random.randint(1, n, n)
-print("total iteration count", с_means(x, y, n, k, m, epsilon))
+print("total iteration count", c_means(x, y, n, k, m, epsilon))
