@@ -21,7 +21,7 @@ y = np.random.randint(1, 100, n)
 eps, minPts = 10, 3
 flags = []
 for i in range(0, n):
-    neighb = 0
+    neighb = -1
     for j in range(0, n):
         if dist(x[i], y[i], x[j], y[j]) < eps:
             neighb += 1
@@ -58,6 +58,14 @@ for i in range(0, n):
                 min_dist = cur_dist
         clusters[i] = clusters[nearest_point_index]
 print(clusters)
+for i in range(0, n):
+    if (flags[i] == Flag.RED.value):
+        plt.scatter(x[i], y[i], c='r')
+    if (flags[i] == Flag.GREEN.value):
+        plt.scatter(x[i], y[i], c='green')
+    if (flags[i] == Flag.YELLOW.value):
+        plt.scatter(x[i], y[i], c='yellow')
+plt.show()
 for i in range(0, n):
     if (flags[i] == Flag.RED.value):
         plt.scatter(x[i], y[i], c='r')
