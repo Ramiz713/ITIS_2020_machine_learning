@@ -51,12 +51,12 @@ def cluster():
         queue = Queue()
         for i in range(n):
             if clust_pnt[i] == 0:
-                graphTraversal(i, queue, cl)
+                graph_traversal(i, queue, cl)
                 break
 
 
 # Обход графа в ширину
-def graphTraversal(node, queue, cl):
+def graph_traversal(node, queue, cl):
     queue.put(node)
     while True:
         if queue.empty():
