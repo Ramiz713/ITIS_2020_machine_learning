@@ -1,4 +1,4 @@
-from sklearn import svm
+from sklearn.linear_model import LogisticRegression
 import numpy as np
 from sklearn.cluster import KMeans
 import plotly.graph_objects as go
@@ -12,8 +12,8 @@ points = [([x[i], y[i], z[i]]) for i in range(n)]
 clusters = KMeans(n_clusters=2).fit(points).labels_
 colors = ['red' if l == 0 else 'blue' for l in clusters]
 
-clf = svm.SVC(kernel='linear')
-clf.fit(points[:], clusters)
+clf = LogisticRegression()
+clf.fit(points, clusters)
 w = clf.coef_[0]
 temp = np.linspace(0, 100, 100)
 xx, yx = np.meshgrid(temp, temp)
